@@ -1,0 +1,39 @@
+program CompilerV1;
+var 
+    foo: float; 
+    bar, foobar, barfoo: float;
+    assign1: int;
+    i: float;
+    j: float;
+
+void emptyFunction1(floatNumber: float, intNumber: int) [
+    var 
+        number1: int;
+        number2: float;
+    
+    {
+
+        if (foo != bar) { 
+            foo = -1;
+        } else { 
+            bar = 2;
+        };
+
+        while { 
+            i = bar + 1; 
+            j = foo - 1;
+        
+        } do (foo < 10);
+        
+        print(1+2, 2+3, "The quick brown fox jumps over the lazy dog !@#$%^&*()_+][\']");
+
+    }    
+];
+
+main 
+{
+    print("aaa"); 
+    print("dddd");
+}
+
+end

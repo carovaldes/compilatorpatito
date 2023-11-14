@@ -1,0 +1,24 @@
+program MyProgram;
+var 
+  B, E, F, H, J, K: int;
+  A, C, D, G: float;
+
+void simplefunc(floaty: float, inty:int)[{}];
+main
+{ 
+  A = B+C*(D-E/F)*H;
+  B = E-F;
+  while {
+    H = J * K + B;
+    if (B < H){
+        B = H + J;
+        print(A+B*D, D-E);
+    }
+    else {
+        A = A + B;
+        print("saludos", B - D);
+    };
+  } do (A*B-C > D*E);
+  F = A + D;
+}
+end
