@@ -11,90 +11,87 @@ def checkMem(op):
 #switch
 def switchVM(quad):
     global cuadruplos, currPointer
-    #cambiar + - etc por dir memoria
+
     operacion = quad.operador
     
-    if operacion == '+':
+    if operacion == 1: #+
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
         res = (izq) + (der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '-':
+    elif operacion == 2: #-
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
         res = (izq) - (der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '*':
+    elif operacion == 3: #*
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
         res = (izq) * (der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '/':
+    elif operacion == 4: #/
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
         res = (izq) / (der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '>':
+    elif operacion == 6: #>
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
-        res = (izq) > (der)
+        res = (izq > der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '<':
+    elif operacion == 5: #<
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
-        res = (izq) < (der)
+        res = (izq < der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '!=':
+    elif operacion == 8: #!=
         izq = checkMem(quad.operando1)
         der = checkMem(quad.operando2)
-        res = (izq) != (der)
+        res = (izq != der)
         memoria[quad.target] = res
         currPointer+=1
 
-    elif operacion == '=':
+    elif operacion == 7: #=
         op = checkMem(quad.operando1)
         memoria[quad.target] = op
         currPointer+=1
 
-    elif operacion == 'Goto':
+    elif operacion == 10: #Goto
         currPointer = quad.target
 
-    elif operacion == 'GotoF':
+    elif operacion == 11: #GotoF
         op = memoria[quad.operando1]
-        print("estoy en GotoF ", op)
         if (op == False):
             currPointer = quad.target
         else:
             currPointer+=1
 
-    elif operacion == 'GotoV':
+    elif operacion == 12: #'GotoV'
         op = memoria[quad.operando1]
         if (op == True):
             currPointer = quad.target
         else:
             currPointer+=1
 
-    elif operacion == 'print':
+    elif operacion == 13: #'print'
         print(memoria[quad.target])
         currPointer+=1
     
 
 def runVm():
     global currPointer
-    print("corre VM")
     while (currPointer < len(cuadruplos)):
-        #print('pointer: ', currPointer)
         switchVM(cuadruplos[currPointer])
         

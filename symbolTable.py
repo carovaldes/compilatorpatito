@@ -31,6 +31,10 @@ tablaOper = {
     '=': 7,
     '!=': 8,
     '(': 9,
+    'Goto': 10,
+    'GotoF': 11,
+    'GotoV': 12,
+    'print': 13,
 }
 
 @dataclass
@@ -105,7 +109,6 @@ def deleteVarTable(name):
     global dirFunc
     for func in dirFunc:
         if func.name == name:
-            print(name, ': ', func.varTable)
             func.varTable = {}
             return
 
@@ -114,7 +117,6 @@ def deleteAll():
     del dirFunc
 
 def imprime():
-    print('entre al imprime')
     global dirFunc
     for func in dirFunc:
         print(func)
@@ -153,7 +155,7 @@ cont = 0
 #cuadruplo 'main' 
 def pushMain():
     global PJump, cuadruplos, cont
-    quad = Cuadruplo('Goto', None, None, None)
+    quad = Cuadruplo(tablaOper['Goto'], None, None, None)
     PJump.append(cont)
     cuadruplos.append(quad)
     cont+=1
@@ -240,23 +242,21 @@ def cuadruploTermino(op1, op2):
         rightOperand = POperando.pop(); rightType = Tipos.pop()
         leftOperand = POperando.pop(); leftType = Tipos.pop()
         operador = POperador.pop()
-        print(leftType, rightType, operador)
-        print('operadores: ', leftOperand, rightOperand)
         resultType = semanticCube[leftType][rightType][operador]
         #dependiendo de result type asignar ti, tf
         if (resultType == 'int'):
             #temporal
-            quad = Cuadruplo(operador, leftOperand, rightOperand, ti)
+            quad = Cuadruplo(tablaOper[operador], leftOperand, rightOperand, ti)
             result = ti
             memoria[ti] = 0
             ti+=1
         else: #era float
-            quad = Cuadruplo(operador, leftOperand, rightOperand, tf)
+            quad = Cuadruplo(tablaOper[operador], leftOperand, rightOperand, tf)
             result = tf
             memoria[tf] = 0
             tf+=1
         cuadruplos.append(quad); cont+=1
-        POperando.append(result) # ???
+        POperando.append(result) 
         Tipos.append(resultType)
 
 # < > != 
@@ -268,7 +268,7 @@ def cuadruploExpresion():
         operador = POperador.pop()
         resultType = semanticCube[leftType][rightType][operador]
         #asignar temporal bool; resultType siempre es bool
-        quad = Cuadruplo(operador, leftOperand, rightOperand, tb)
+        quad = Cuadruplo(tablaOper[operador], leftOperand, rightOperand, tb)
         result = tb
         memoria[tb] = 0
         tb+=1
@@ -284,7 +284,7 @@ def cuadruploAssign():
         target = POperando.pop(); targetType = Tipos.pop()  #deberia de ser una variable    
         resultType = semanticCube[targetType][operandoType][operador]
         if (resultType != 'Error'):
-            quad = Cuadruplo(operador, operando, None, target)
+            quad = Cuadruplo(tablaOper[operador], operando, None, target)
             cuadruplos.append(quad); cont+=1
         else:
             raise ValueError(f"Type-mismatch during: {targetType}")
@@ -297,7 +297,7 @@ def ifElse1():
         raise ValueError(f"Variable not boolean (type-mismatch): {tipo}")
     else:
         result = POperando.pop()
-        quad = Cuadruplo('GotoF', result, None, None)
+        quad = Cuadruplo(tablaOper['GotoF'], result, None, None)
         cuadruplos.append(quad)
         cont+=1
         PJump.append(cont-1)
@@ -311,7 +311,7 @@ def ifElse2():
 
 def ifElse3():
     global Tipos, POperador, POperando, cont, cuadruplos, PJump
-    quad = Cuadruplo('Goto',None,None,None)
+    quad = Cuadruplo(tablaOper['Goto'],None,None,None)
     cuadruplos.append(quad)
     cont+=1
     false = PJump.pop()
@@ -333,7 +333,7 @@ def returnWhile():
     else:
         ret = PJump.pop()
         result = POperando.pop() 
-        quad = Cuadruplo('GotoV', result, None, ret)
+        quad = Cuadruplo(tablaOper['GotoV'], result, None, ret)
         cont+=1
         cuadruplos.append(quad)
 
@@ -342,9 +342,6 @@ def cuadruploPrint():
     global POperando, cuadruplos, cont, Tipos
     toPrint = POperando.pop()
     Tipos.pop()
-    quad = Cuadruplo('print', None, None, toPrint)
+    quad = Cuadruplo(tablaOper['print'], None, None, toPrint)
     cuadruplos.append(quad)
     cont+=1
-
-
-#en cuadruplos guardar operandos/argumentos como string
