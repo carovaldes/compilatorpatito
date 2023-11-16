@@ -42,8 +42,8 @@ class Funcion:
     name: str 
     scope: str
     varTable: dict  
-    #quadStart indice
-    #quadEnd indice
+    quadStart: int
+    quadEnd: int
 
 @dataclass
 class Variable:
@@ -54,7 +54,7 @@ class Variable:
 def addFunction(name, scope):
     global dirFunc
     lookupFunc(name)
-    dirFunc.append(Funcion(name, scope, {}))
+    dirFunc.append(Funcion(name, scope, {}, 0, 0))
 
 #agregar vartable a funcion
 def addVar(vars, type):
@@ -166,7 +166,6 @@ def quadruploMain():
     quad = cuadruplos[jump]
     quad.target = cont
     cuadruplos[jump] = quad
-
 
 #funcion donde se hace el push
 #para operador
@@ -345,3 +344,18 @@ def cuadruploPrint():
     quad = Cuadruplo(tablaOper['print'], None, None, toPrint)
     cuadruplos.append(quad)
     cont+=1
+
+#definir inicio y fin de funcion
+def quadStart(name):
+    global dirFunc
+    for funct in dirFunc:
+        if funct.name == name:
+            funct.quadStart = cont
+            return None
+    raise ValueError(f"Function does not exist: {name}")
+
+def quadEnd(name):
+    global dirFunc
+    for funct in dirFunc:
+        if funct.name == name:
+            funct.quadEnd = cont-1

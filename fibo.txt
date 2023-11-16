@@ -1,16 +1,14 @@
 program Fibonacci;
 var
-    n1, n2, n3, num, x: int;
+    n1, n2, n3, num: int;
     cont: int;
 void simplefunc(floaty: float, inty:int)[{}];    
 main
 {
-    num = 20;
+    num = 10;
     cont = 0;
     n1 = 0;
     n2 = 1;
-    x = 1 + -n2;
-    print(x);
     if (num < 1) {
         print("Not a valid number");
     } else {

@@ -75,7 +75,7 @@ factor_arg : (factor_operator? Id {pushOperand($Id.text, $factor_operator.text, 
 cte : factor_operator? (Cte_int {pushOperand($Cte_int.text, $factor_operator.text, 'int', 1, 0)} | Cte_float {pushOperand($Cte_float.text, $factor_operator.text, 'float', 1, 0)});
 
 //func
-func : 'void' Id {addFunction($Id.text, 'local')} '(' id_loop? ')' '[' vars? body ']' ';' {deleteVarTable($Id.text)};
+func : 'void' Id {addFunction($Id.text, 'local')} '(' id_loop? ')' '[' vars? {quadStart($Id.text)} body {quadEnd($Id.text)} ']' ';' {deleteVarTable($Id.text)};
 id_loop : Id ':' type {addVar($Id.text, $type.text)} id_loop_prime;
 id_loop_prime : ',' id_loop | ;
 
